@@ -4,23 +4,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*
-want to hash as function if possible, not sure if it is, other than macro
-magic
-_create_lru(size_t Arg, unsigned long hash
-unsigned long hash_args(size_t Arg, ...) {
-  va_list sArg;
-  int num_args = Arg;
+//want to hash as function if possible, not sure if it is, other than macro
+//magic
+unsigned long hash_args(size_t *list, size_t list_len) {
   unsigned long hash = 0;
   // get first arg
   // which is just number of args
-  va_start(sArg, Arg);
-  while (--Arg) {
-    hash = va_arg(sArg, size_t) + (hash << 6) + (hash << 16) - hash;
+  for(size_t i = 0; i < list_len; i++){
+    hash = list[i] + (hash << 6) + (hash << 16) - hash;
   }
   return hash;
 }
-*/
 
 lru *_create_lru(size_t max_len, size_t Arg, ...) {
   lru *new_lru = malloc(sizeof(lru));
@@ -32,11 +26,22 @@ lru *_create_lru(size_t max_len, size_t Arg, ...) {
   va_list sArg;
   printf("number of args = %ld\n", Arg);
   int num_args = Arg;
+
+  size_t all_args[100];
+  size_t all_args_len = 0;
   va_start(sArg, Arg);
+  while (--Arg){
+	  all_args[all_args_len++] = va_arg(sArg,size_t);
+  }
 
   unsigned long hash = 0;
+  hash = hash_args(all_args,all_args_len);
+
+  printf("hash = %lu\n",hash);
+  hash = 0;
   // get first arg
   // which is just number of args
+  Arg = num_args;
   va_start(sArg, Arg);
   while (--Arg) {
     hash = va_arg(sArg, size_t) + (hash << 6) + (hash << 16) - hash;
