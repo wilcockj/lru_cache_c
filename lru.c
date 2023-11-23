@@ -41,6 +41,8 @@ lru *_create_lru(size_t max_len, size_t Arg, ...) {
   while (--Arg) {
     hash = va_arg(sArg, size_t) + (hash << 6) + (hash << 16) - hash;
   }
+  // make a hash table and use the hash we made as the key
+
   // hash is hash unique to these args
   printf("hash = %lu\n", hash);
 
