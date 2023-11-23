@@ -27,7 +27,7 @@ lru *_create_lru(size_t max_len, size_t Arg, ...) {
   printf("number of args = %ld\n", Arg);
   int num_args = Arg;
 
-  size_t all_args[100];
+  size_t all_args[MAX_ARGS];
   size_t all_args_len = 0;
   va_start(sArg, Arg);
   while (--Arg){
