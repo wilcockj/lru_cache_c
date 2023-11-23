@@ -22,7 +22,13 @@ unsigned long hash_args(size_t Arg, ...) {
 }
 */
 
-lru *_create_lru(size_t Arg, ...) {
+lru *_create_lru(size_t max_len, size_t Arg, ...) {
+  lru *new_lru = malloc(sizeof(lru));
+  new_lru->max_len = max_len;
+  new_lru->len = 0;
+  new_lru->head = NULL;
+  new_lru->tail = NULL;
+  printf("max len = %d\n", new_lru->max_len);
   va_list sArg;
   printf("number of args = %ld\n", Arg);
   int num_args = Arg;
@@ -43,6 +49,5 @@ lru *_create_lru(size_t Arg, ...) {
   while (--Arg) {
     printf("%ld = %ld\n", num_args - Arg - 1, va_arg(sArg, size_t));
   }
-  lru *new_lru = malloc(sizeof(lru));
   return new_lru;
 }

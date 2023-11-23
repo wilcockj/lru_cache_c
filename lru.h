@@ -9,7 +9,7 @@
 // what i most care about is being able to lru cache
 // the inputs to a function
 
-#define create_lru(...) _create_lru(_NARG(__VA_ARGS__), __VA_ARGS__)
+#define create_lru(max_len,...) _create_lru(max_len, _NARG(__VA_ARGS__), __VA_ARGS__)
 #define _NARG(...)      _NARG_( __VA_ARGS__, _RSEQ() )
 #define _NARG_(...)     _SEQ( __VA_ARGS__ )
 #define _SEQ( \
@@ -43,6 +43,7 @@
 
 typedef struct lru_dll {
   void *data;
+  unsigned long hash;
   struct lru_dll *prev, *next;
 } lru_dll;
 
@@ -60,6 +61,6 @@ typedef struct {
 } lru;
 
 
-lru *_create_lru(size_t Arg, ...);
+lru *_create_lru(size_t max_len, size_t Arg, ...);
 lru *add_data(void* data_ptr);
 void * get_data(lru *my_lru);
