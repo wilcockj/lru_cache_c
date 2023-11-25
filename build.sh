@@ -1,1 +1,1 @@
-gcc -Wall lru.c main.c
+gcc -Wall hashmap.c lru.c main.c -o cache
