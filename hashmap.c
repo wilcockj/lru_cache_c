@@ -2,14 +2,18 @@
 #include <stdio.h>
 #include "hashmap.h"
 hte* get_entry(ht * table,long unsigned hash_key){
+	size_t access_count = 1;
 	size_t index = hash_key % table->capacity;
 	hte * entry = &table->entries[index];
 	if(entry->hash_key == hash_key){
+		printf("took %d accesses to find data\n",access_count);
 		return entry;
 	}
 	//may not be present
 	for(int i = index; i < index + table->capacity;i++){
+		access_count++;
 		if(table->entries[i].hash_key == hash_key){
+			printf("took %d accesses to find data\n",access_count);
 			return &table->entries[i];
 		}
 	}
@@ -34,6 +38,7 @@ void add_entry(ht *table, void *data, long unsigned hash_key){
 				table->entries[i].data = data;
 				table->entries[i].hash_key = hash_key;
 				table->entry_count++;
+				return;
 			}
 		}
 
