@@ -1,3 +1,5 @@
+// for some reason when inserting not at the index of
+// hash does not get it
 #include "hashmap.h"
 #include <stdio.h>
 #include <stdlib.h>
