@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdlib.h>
 
 // take the has mod by size of hash map
 // if there is an entry at that index already 
