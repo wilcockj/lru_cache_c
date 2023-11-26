@@ -30,7 +30,7 @@ int main() {
   assert(*((int *)entry->data) == 132);
   printf("got corrrect entry key = %lu, data = %d\n", entry->hash_key,
          *((int *)entry->data));
-  for (int i = 0; i < 1000; i++) {
+  for (int i = 10000; i < 10100; i++) {
     get_entry(table, i);
   }
   return 0;

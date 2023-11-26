@@ -19,6 +19,7 @@ hte *get_entry(ht *table, long unsigned hash_key) {
       return &table->entries[i % table->capacity];
     }
   }
+  printf("found nothing for hash key %d\n", hash_key);
   return NULL;
 }
 
