@@ -35,10 +35,16 @@ int main() {
   add_entry(table, (void *)&yes3, 50);
   add_entry(table, (void *)&yes4, 60);
 
-  for (int i = 10000; i < 1200000; i++) {
+  for (int i = 100; i < 200; i++) {
     //  printf("putting data in at hash %d\n", i);
-    add_entry(table, (void *)&yes3, i);
+    int err = add_entry(table, (void *)&yes3, i);
+    if (err != 0) {
+      printf("Some error allocating for hash_key %d\n", i);
+    }
   }
+  printf("after populating the hash map capacity is %d and entry_count = %d\n",
+         table->capacity, table->entry_count);
+
   hte *entry = get_entry(table, 100);
   assert(*((int *)entry->data) == 132);
 
@@ -48,12 +54,11 @@ int main() {
 
   printf("got corrrect entry key = %lu, data = %d\n", entry->hash_key,
          *((int *)entry->data));
-  for (int i = 10000; i < 10100; i++) {
+  for (int i = 0; i < 12000; i++) {
     hte *entry = get_entry(table, i);
     if (entry != NULL) {
-      //     printf("entry at hash %d = %d\n", entry->hash_key,
-      //     *((int
-      //     *)entry->data));
+      printf("entry at hash %d = %d\n", entry->hash_key, *((int *)entry->data));
+      printf("took %d accesses\n", entry->accesses_to_find);
     }
   }
   return 0;
