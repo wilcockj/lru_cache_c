@@ -38,7 +38,7 @@ static hte *get_entry_index(ht *table, size_t index) {
 // TODO make this int return and add some errors
 int add_entry(ht *table, void *data, long unsigned hash_key) {
   size_t index = hash_key % table->capacity;
-  if (table->entries[index].data == NULL) {
+  if (table->entries[index].data == NULL || table->entries[index].hash_key == hash_key) {
     // printf("inserting data at %d\n", index);
     table->entries[index].data = data;
     table->entries[index].hash_key = hash_key;
@@ -47,17 +47,21 @@ int add_entry(ht *table, void *data, long unsigned hash_key) {
     // linearly look for a free entry after index
     if (table->capacity == table->entry_count) {
       // TODO need to make new hash table double the capacity
+#ifdef LOG
       printf("TABLE WAS FULL ON KEY %lu\n", hash_key);
       printf("capacity = %zu, entry_count = %ld\n", table->capacity,
              table->entry_count);
+#endif
       ht *new_ht = create_table(table->capacity * 2);
       if (new_ht == NULL) {
         // some error allocating
         return -1;
       }
 
+#ifdef LOG
       printf("allocated and populated new hash table, new capacity = %zu\n",
              new_ht->capacity);
+#endif
       // put the old data in the new_ht
       for (int i = 0; i < table->capacity; i++) {
         hte *old_entry = get_entry_index(table, i);
@@ -78,7 +82,7 @@ int add_entry(ht *table, void *data, long unsigned hash_key) {
       return 0;
     }
     for (int i = index + 1; i < index + table->capacity; i++) {
-      if (table->entries[i % table->capacity].data == NULL) {
+      if (table->entries[i % table->capacity].data == NULL || table->entries[i % table->capacity].hash_key == hash_key) {
         // printf("linear probe inserting data at %d, num of entries = %d\n",
         //       i % table->capacity, table->entry_count);
         table->entries[i % table->capacity].data = data;

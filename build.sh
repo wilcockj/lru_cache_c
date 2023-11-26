@@ -1,7 +1,7 @@
 if [[ $1 != 'test' ]]
 then
     echo "Building cache binary"
-    gcc -Wall -g3 src/hashmap.c src/lru.c src/main.c -o cache
+    gcc -Wall -g3 src/hashmap.c src/lru.c src/main.c -DLOG -o cache
 else
     echo "Building test binary"
     gcc -Wall -g3 src/hashmap.c src/lru.c src/test.c -o test
