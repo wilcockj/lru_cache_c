@@ -22,8 +22,8 @@ int main() {
   add_entry(table, (void *)&yes1, 100);
   add_entry(table, (void *)&yes2, 20);
   add_entry(table, (void *)&yes3, 50);
-  for (int i = 10000; i < 10100; i++) {
-    printf("putting data in at hash %d\n", i);
+  for (int i = 10000; i < 120000; i++) {
+  //  printf("putting data in at hash %d\n", i);
     add_entry(table, (void *)&yes3, i);
   }
   hte *entry = get_entry(table, 100);
@@ -31,7 +31,10 @@ int main() {
   printf("got corrrect entry key = %lu, data = %d\n", entry->hash_key,
          *((int *)entry->data));
   for (int i = 10000; i < 10100; i++) {
-    get_entry(table, i);
+    hte *entry = get_entry(table, i);
+    if (entry != NULL) {
+ //     printf("entry at hash %d = %d\n", entry->hash_key, *((int *)entry->data));
+    }
   }
   return 0;
 }
