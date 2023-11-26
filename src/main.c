@@ -46,7 +46,7 @@ int main() {
       printf("Some error allocating for hash_key %d\n", i);
     }
   }
-  printf("after populating the hash map capacity is %d and entry_count = %d\n",
+  printf("after populating the hash map capacity is %zu and entry_count = %ld\n",
          table->capacity, table->entry_count);
 
   hte *entry = get_entry(table, 100);
@@ -61,7 +61,7 @@ int main() {
   for (int i = 0; i < 12000; i++) {
     hte *entry = get_entry(table, i);
     if (entry != NULL) {
-      printf("entry at hash %d = %d\n", entry->hash_key, *((int *)entry->data));
+      printf("entry at hash %ld = %d\n", entry->hash_key, *((int *)entry->data));
       printf("took %d accesses\n", entry->accesses_to_find);
     }
   }

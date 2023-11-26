@@ -48,7 +48,7 @@ int add_entry(ht *table, void *data, long unsigned hash_key) {
     if (table->capacity == table->entry_count) {
       // TODO need to make new hash table double the capacity
       printf("TABLE WAS FULL ON KEY %lu\n", hash_key);
-      printf("capacity = %d, entry_count = %d\n", table->capacity,
+      printf("capacity = %zu, entry_count = %ld\n", table->capacity,
              table->entry_count);
       ht *new_ht = create_table(table->capacity * 2);
       if (new_ht == NULL) {
