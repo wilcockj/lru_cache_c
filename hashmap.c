@@ -1,6 +1,7 @@
 #include "hashmap.h"
 #include <stdio.h>
 #include <stdlib.h>
+
 hte *get_entry(ht *table, long unsigned hash_key) {
   size_t access_count = 1;
   size_t index = hash_key % table->capacity;
@@ -29,6 +30,8 @@ static hte *get_entry_index(ht *table, size_t index) {
   return entry;
 }
 
+
+// TODO make this int return and add some errors
 void add_entry(ht *table, void *data, long unsigned hash_key) {
   size_t index = hash_key % table->capacity;
   if (table->entries[index].data == NULL) {
