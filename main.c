@@ -11,6 +11,10 @@
     }                                                                          \
   } while (0)
 
+/* Add some nice logging that can be toggled
+ * Work on the lru part, now that hashmap is functional
+ */
+
 int fib(int n) {
   if (n < 2)
     return n;
