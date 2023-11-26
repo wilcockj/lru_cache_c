@@ -27,8 +27,22 @@ int test_pointer_fresh() {
   return 0;
 }
 
+int test_capacity_expansion() {
+  ht *table = create_table(10);
+  int num = 100;
+  for (int i = 0; i < 100; i++) {
+    add_entry(table, (void *)&num, i);
+  }
+  ASSERT(table->capacity == 160);
+  hte *entry = get_entry(table, 0);
+  ASSERT(*((int *)entry->data) == 100);
+  printf("Passed capacity expansion test\n");
+  return 0;
+}
+
 int main() {
   test_get();
   test_pointer_fresh();
+  test_capacity_expansion();
   return EXIT_SUCCESS;
 }
