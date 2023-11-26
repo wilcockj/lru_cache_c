@@ -40,9 +40,22 @@ int test_capacity_expansion() {
   return 0;
 }
 
+int test_update_entry() {
+  ht *table = create_table(10);
+  int num = 100;
+  add_entry(table, (void *)&num, 1);
+  int alt_num = 400;
+  add_entry(table, (void *)&alt_num, 1);
+  hte *entry = get_entry(table, 1);
+  ASSERT(*((int *)entry->data) == 400);
+  printf("Passed update entry test\n");
+  return 0;
+}
+
 int main() {
   test_get();
   test_pointer_fresh();
   test_capacity_expansion();
+  test_update_entry();
   return EXIT_SUCCESS;
 }
