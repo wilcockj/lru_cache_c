@@ -57,25 +57,46 @@ int test_dll_creation() {
   dll list = create_dll();
   int x = 4;
   int y = 5;
-  prepend_data(&list, (void *)&x);
+  int head_sentinel = 54;
+  dll_node *tail_node = prepend_data(&list, (void *)&x);
   ASSERT(*((int *)list.head->data) == 4);
-  ASSERT(*((int *)list.tail->data) == 4);
+  ASSERT(list.length == 1);
 
   // test where the tail is as well
-  printf("Passed dll creation test\n");
   prepend_data(&list, (void *)&x);
   prepend_data(&list, (void *)&x);
   prepend_data(&list, (void *)&x);
   dll_node *y_node = prepend_data(&list, (void *)&y);
-  prepend_data(&list, (void *)&x);
+  dll_node *head_node = prepend_data(&list, (void *)&head_sentinel);
   ASSERT(list.length == 6);
 
+  // move tail to front and check that tail is updated along with head
+  move_node_to_front(&list,y_node);
+  ASSERT(list.length == 6);
+  ASSERT(*(int *)(list.head->data) == y);
+  ASSERT(list.head->data == &y);
+  ASSERT(*(int *)(list.head->next->data) == head_sentinel);
+  ASSERT(list.head = y_node);
+
+  // move that new node to front
   move_node_to_front(&list,y_node);
   ASSERT(list.length == 6);
   ASSERT(list.head->data == &y);
+  ASSERT(list.head->next == head_node);
 
-  // what about moving the last item to front,
-  // or removing the last item. will tail be appropriately set
+  // remove that node, should change the head
+  remove_node(&list,y_node);
+  ASSERT(list.length == 5);
+  ASSERT(list.head == head_node);
+  
+  // check that the tail is the first node still
+  ASSERT(list.tail == tail_node); 
+  dll_node *tail_prev = list.tail->prev;
+  move_node_to_front(&list,tail_node);
+  ASSERT(list.head == tail_node);
+  ASSERT(list.tail == tail_prev);
+
+  printf("Passed dll creation test\n");
   return 0;
 }
 
