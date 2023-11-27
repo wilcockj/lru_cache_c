@@ -58,9 +58,16 @@ int test_dll_creation() {
   int x = 4;
   prepend_data(&list, (void *)&x);
   ASSERT(*((int *)list.head->data) == 4);
+  ASSERT(*((int *)list.tail->data) == 4);
 
   // test where the tail is as well
   printf("Passed dll creation test\n");
+  prepend_data(&list, (void *)&x);
+  prepend_data(&list, (void *)&x);
+  prepend_data(&list, (void *)&x);
+  prepend_data(&list, (void *)&x);
+  prepend_data(&list, (void *)&x);
+  ASSERT(list.length == 6);
   return 0;
 }
 

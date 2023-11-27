@@ -21,7 +21,7 @@ int prepend_data(dll *linked_list, void *data) {
   }
   linked_list->length++;
   linked_list->head = new_node;
-  if (linked_list->length == 0) {
+  if (linked_list->length == 1) {
     linked_list->tail = new_node;
   }
   // successful prepend
@@ -41,7 +41,6 @@ int remove_node(dll *linked_list, dll_node *node) {
 }
 
 int move_node_to_front(dll *linked_list, dll_node *node) {
-  dll_node *node_to_move;
   // close the gap left by moving node
   dll_node *old_prev = node->prev;
   dll_node *old_next = node->next;
