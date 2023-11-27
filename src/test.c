@@ -95,6 +95,7 @@ int test_dll_creation() {
   move_node_to_front(&list,tail_node);
   ASSERT(list.head == tail_node);
   ASSERT(list.tail == tail_prev);
+  ASSERT(list.length == 5);
 
   printf("Passed dll creation test\n");
   return 0;
