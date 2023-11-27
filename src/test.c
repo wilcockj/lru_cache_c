@@ -56,6 +56,7 @@ int test_update_entry() {
 int test_dll_creation() {
   dll list = create_dll();
   int x = 4;
+  int y = 5;
   prepend_data(&list, (void *)&x);
   ASSERT(*((int *)list.head->data) == 4);
   ASSERT(*((int *)list.tail->data) == 4);
@@ -65,9 +66,16 @@ int test_dll_creation() {
   prepend_data(&list, (void *)&x);
   prepend_data(&list, (void *)&x);
   prepend_data(&list, (void *)&x);
-  prepend_data(&list, (void *)&x);
+  dll_node *y_node = prepend_data(&list, (void *)&y);
   prepend_data(&list, (void *)&x);
   ASSERT(list.length == 6);
+
+  move_node_to_front(&list,y_node);
+  ASSERT(list.length == 6);
+  ASSERT(list.head->data == &y);
+
+  // what about moving the last item to front,
+  // or removing the last item. will tail be appropriately set
   return 0;
 }
 

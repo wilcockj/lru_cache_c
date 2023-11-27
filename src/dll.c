@@ -8,7 +8,7 @@ dll create_dll() {
   return new_dll;
 }
 
-int prepend_data(dll *linked_list, void *data) {
+dll_node* prepend_data(dll *linked_list, void *data) {
 
   dll_node *head = linked_list->head;
   dll_node *new_node = malloc(sizeof(dll_node));
@@ -25,7 +25,7 @@ int prepend_data(dll *linked_list, void *data) {
     linked_list->tail = new_node;
   }
   // successful prepend
-  return 0;
+  return new_node;
 }
 
 int remove_node(dll *linked_list, dll_node *node) {
