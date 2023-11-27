@@ -1,5 +1,6 @@
 #include "test.h"
 #include "assert.h"
+#include "dll.h"
 #include "hashmap.h"
 #include <stdio.h>
 
@@ -52,10 +53,22 @@ int test_update_entry() {
   return 0;
 }
 
+int test_dll_creation() {
+  dll list = create_dll();
+  int x = 4;
+  prepend_data(&list, (void *)&x);
+  ASSERT(*((int *)list.head->data) == 4);
+
+  // test where the tail is as well
+  printf("Passed dll creation test\n");
+  return 0;
+}
+
 int main() {
   test_get();
   test_pointer_fresh();
   test_capacity_expansion();
   test_update_entry();
+  test_dll_creation();
   return EXIT_SUCCESS;
 }
