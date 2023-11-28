@@ -71,7 +71,7 @@ int test_dll_creation() {
   ASSERT(list.length == 6);
 
   // move tail to front and check that tail is updated along with head
-  move_node_to_front(&list,y_node);
+  move_node_to_front(&list, y_node);
   ASSERT(list.length == 6);
   ASSERT(*(int *)(list.head->data) == y);
   ASSERT(list.head->data == &y);
@@ -79,25 +79,86 @@ int test_dll_creation() {
   ASSERT(list.head = y_node);
 
   // move that new node to front
-  move_node_to_front(&list,y_node);
+  move_node_to_front(&list, y_node);
   ASSERT(list.length == 6);
   ASSERT(list.head->data == &y);
   ASSERT(list.head->next == head_node);
 
   // remove that node, should change the head
-  remove_node(&list,y_node);
+  remove_node(&list, y_node);
   ASSERT(list.length == 5);
   ASSERT(list.head == head_node);
-  
+
   // check that the tail is the first node still
-  ASSERT(list.tail == tail_node); 
+  ASSERT(list.tail == tail_node);
   dll_node *tail_prev = list.tail->prev;
-  move_node_to_front(&list,tail_node);
+  move_node_to_front(&list, tail_node);
   ASSERT(list.head == tail_node);
   ASSERT(list.tail == tail_prev);
   ASSERT(list.length == 5);
 
   printf("Passed dll creation test\n");
+  return 0;
+}
+
+int test_dll_prepend() {
+  dll list = create_dll();
+  int x = 4;
+  int y = 5;
+  int head_sentinel = 54;
+  dll_node *tail_node = prepend_data(&list, (void *)&x);
+  // test where the tail is as well
+  prepend_data(&list, (void *)&x);
+  prepend_data(&list, (void *)&x);
+  prepend_data(&list, (void *)&x);
+  dll_node *y_node = prepend_data(&list, (void *)&y);
+  dll_node *head_node = prepend_data(&list, (void *)&head_sentinel);
+  ASSERT(list.length == 6);
+  printf("Passed dll prepend test\n");
+  return 0;
+}
+
+int test_dll_move_to_front() {
+  dll list = create_dll();
+
+  int x = 4;
+  int y = 5;
+  int head_sentinel = 54;
+  dll_node *tail_node = prepend_data(&list, (void *)&x);
+  // test where the tail is as well
+  prepend_data(&list, (void *)&x);
+  prepend_data(&list, (void *)&x);
+  prepend_data(&list, (void *)&x);
+  dll_node *y_node = prepend_data(&list, (void *)&y);
+  dll_node *head_node = prepend_data(&list, (void *)&head_sentinel);
+  // move tail to front and check that tail is updated along with head
+  move_node_to_front(&list, y_node);
+  ASSERT(list.length == 6);
+  ASSERT(*(int *)(list.head->data) == y);
+  ASSERT(list.head->data == &y);
+  ASSERT(*(int *)(list.head->next->data) == head_sentinel);
+  ASSERT(list.head = y_node);
+
+  // move that new node to front
+  move_node_to_front(&list, y_node);
+  ASSERT(list.length == 6);
+  ASSERT(list.head->data == &y);
+  ASSERT(list.head->next == head_node);
+
+  // remove that node, should change the head
+  remove_node(&list, y_node);
+  ASSERT(list.length == 5);
+  ASSERT(list.head == head_node);
+
+  // check that the tail is the first node still
+  ASSERT(list.tail == tail_node);
+  dll_node *tail_prev = list.tail->prev;
+  move_node_to_front(&list, tail_node);
+  ASSERT(list.head == tail_node);
+  ASSERT(list.tail == tail_prev);
+  ASSERT(list.length == 5);
+
+  printf("Passed move node to front of DLL\n");
   return 0;
 }
 
@@ -107,5 +168,7 @@ int main() {
   test_capacity_expansion();
   test_update_entry();
   test_dll_creation();
+  test_dll_prepend();
+  test_dll_move_to_front();
   return EXIT_SUCCESS;
 }
