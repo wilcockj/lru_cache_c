@@ -1,4 +1,4 @@
-if [[ $1 != 'test' ]]
+if [ "$1" != "test" ]
 then
     echo "Building cache binary"
     gcc -Wall -g3 src/dll.c src/hashmap.c src/lru.c src/main.c -DLOG -o cache
