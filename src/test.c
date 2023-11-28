@@ -12,6 +12,7 @@ int test_get() {
   hte *entry = get_entry(table, 100);
   ASSERT(*((int *)entry->data) == 132);
   printf("Passed get test\n");
+  free_table(table);
   return 0;
 }
 
@@ -25,6 +26,7 @@ int test_pointer_fresh() {
   ASSERT(*((int *)entry->data) == 1003);
   ASSERT(table->capacity == 100);
   printf("Passed get data after increment test\n");
+  free_table(table);
   return 0;
 }
 
@@ -38,6 +40,7 @@ int test_capacity_expansion() {
   hte *entry = get_entry(table, 0);
   ASSERT(*((int *)entry->data) == 100);
   printf("Passed capacity expansion test\n");
+  free_table(table);
   return 0;
 }
 
@@ -98,6 +101,7 @@ int test_dll_creation() {
   ASSERT(list.length == 5);
 
   printf("Passed dll creation test\n");
+  free_dll(&list);
   return 0;
 }
 
@@ -115,6 +119,7 @@ int test_dll_prepend() {
   dll_node *head_node = prepend_data(&list, (void *)&head_sentinel);
   ASSERT(list.length == 6);
   printf("Passed dll prepend test\n");
+  free_dll(&list);
   return 0;
 }
 
@@ -159,6 +164,7 @@ int test_dll_move_to_front() {
   ASSERT(list.length == 5);
 
   printf("Passed move node to front of DLL\n");
+  free_dll(&list);
   return 0;
 }
 

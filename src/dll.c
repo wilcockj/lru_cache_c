@@ -81,3 +81,14 @@ int move_node_to_front(dll *linked_list, dll_node *node) {
 
   return 0;
 }
+
+int free_dll(dll *list){
+    dll_node *cur_node = list->head;
+    dll_node *next_node = cur_node;
+    while(cur_node != NULL){
+        next_node = cur_node->next;
+        free(cur_node); 
+        cur_node = next_node;
+    }
+    return 0;
+}

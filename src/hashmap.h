@@ -24,4 +24,5 @@ typedef struct {
 hte *get_entry(ht *table, long unsigned hash_key);
 int add_entry(ht *table, void *data, long unsigned hash_key);
 ht *create_table(size_t capacity);
+int free_table(ht *table);
 #endif

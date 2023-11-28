@@ -112,3 +112,9 @@ ht *create_table(size_t capacity) {
   table->entry_count = 0;
   return table;
 }
+
+int free_table(ht *table){
+   free(table->entries); 
+   free(table);
+   return 0;
+}
