@@ -14,4 +14,15 @@ else
     else
         echo "Failed some test"
     fi
+    echo "Calling valgrind to check for memory leaks in tests"
+    valgrindoutput=$(valgrind --leak-check=full ./test 2>&1)
+    if echo "$valgrindoutput" | grep -q "no leaks are possible"; then
+        echo "No memory leaks detected."
+        clipped_output=$(echo "$valgrindoutput" | tail)
+        echo "$clipped_output"
+    else
+        echo "Memory leaks detected!"
+        echo "$valgrindoutput"
+    fi
+
 fi

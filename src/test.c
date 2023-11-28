@@ -53,6 +53,7 @@ int test_update_entry() {
   hte *entry = get_entry(table, 1);
   ASSERT(*((int *)entry->data) == 400);
   printf("Passed update entry test\n");
+  free_table(table);
   return 0;
 }
 

@@ -55,6 +55,7 @@ int add_entry(ht *table, void *data, long unsigned hash_key) {
       ht *new_ht = create_table(table->capacity * 2);
       if (new_ht == NULL) {
         // some error allocating
+        free_table(new_ht);
         return -1;
       }
 
@@ -74,6 +75,9 @@ int add_entry(ht *table, void *data, long unsigned hash_key) {
       table->entries = new_ht->entries;
       table->capacity = new_ht->capacity;
       table->entry_count = new_ht->entry_count;
+      // bad code but free newly generated table
+      free(new_ht);
+
       int err = add_entry(table, data, hash_key);
       if (err != 0) {
         // some error adding
