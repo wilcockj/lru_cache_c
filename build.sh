@@ -18,7 +18,7 @@ else
     valgrindoutput=$(valgrind --leak-check=full ./test 2>&1)
     if echo "$valgrindoutput" | grep -q "no leaks are possible"; then
         echo "No memory leaks detected."
-        clipped_output=$(echo "$valgrindoutput" | tail)
+        clipped_output=$(echo "$valgrindoutput" | tail -n 8)
         echo "$clipped_output"
     else
         echo "Memory leaks detected!"
