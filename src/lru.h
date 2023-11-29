@@ -2,6 +2,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include "dll.h"
+#include "hashmap.h"
 // Generic LRU in C
 // define the size of the lru
 // some sort of hash based on what is in data
@@ -43,25 +44,12 @@
 19,18,17,16,15,14,13,12,11,10, \
 9,8,7,6,5,4,3,2,1,0
 
-typedef struct lru_dll {
-  void *data;
-  unsigned long hash;
-  struct lru_dll *prev, *next;
-} lru_dll;
-
 // maybe use variadics to macro a function into lru?
 // store a void pointer to data then allow the function
 // to cast to whatever happens to make sense
 // make simple and just traverse the dll to find
-typedef struct {
-  // doubly linked list for actual lru
-  // hash map for what key goes to what node
-  uint16_t len;
-  uint16_t max_len;
-  lru_dll*  head;
-  lru_dll*  tail;
-} lru_old;
-
+// doubly linked list for actual lru
+// hash map for what key goes to what node
 
 typedef struct {
   uint16_t len;

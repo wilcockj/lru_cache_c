@@ -39,7 +39,7 @@ int main() {
   add_entry(table, (void *)&yes3, 50);
   add_entry(table, (void *)&yes4, 60);
 
-  for (int i = 100; i < 200; i++) {
+  for (int i = 110; i < 200; i++) {
     //  printf("putting data in at hash %d\n", i);
     int err = add_entry(table, (void *)&yes3, i);
     if (err != 0) {

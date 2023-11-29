@@ -20,6 +20,7 @@ unsigned long hash_args(size_t *list, size_t list_len) {
   }
   return hash;
 }
+/*
 
 lru *_create_lru(size_t max_len, size_t Arg, ...) {
   lru *new_lru = malloc(sizeof(lru));
@@ -62,4 +63,5 @@ lru *_create_lru(size_t max_len, size_t Arg, ...) {
     printf("%ld = %ld\n", num_args - Arg - 1, va_arg(sArg, size_t));
   }
   return new_lru;
-}
+}*/
+
