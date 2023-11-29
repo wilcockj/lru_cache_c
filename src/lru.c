@@ -46,8 +46,17 @@ int add_data(lru *cache, unsigned long hash,void* data_ptr){
         }
 
     }
-    // do i need to put hash in dyn ll? dont think so
-    prepend_data(cache->dyn_ll, data_ptr);
+    hte *entry = get_entry(cache->node_map,hash);
+    if(entry != NULL){
+	// data is already in linked list and needs
+	// to be moved to the front
+	move_node_to_front(cache->dyn_ll,(dll_node *)entry->data);
+    }
+    else{
+	    // do i need to put hash in dyn ll? dont think so
+	    hte *entry = prepend_data(cache->dyn_ll, data_ptr);
+	    add_entry(cache->node_map, (void *)entry, hash);
+    }
     return 0;
 }
 /*
