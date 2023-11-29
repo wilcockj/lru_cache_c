@@ -16,6 +16,21 @@ int test_get() {
   return 0;
 }
 
+int test_remove_key() {
+	ht *table = create_table(100);
+	int num = 103;
+	int num2 = 104;
+	add_entry(table, (void *)&num,1);
+	add_entry(table, (void *)&num,2);
+	ASSERT(table->entry_count == 2);             
+	remove_entry(table,2);
+	ASSERT(table->entry_count == 1);             
+	hte *entry = get_entry(table,2);
+	ASSERT(entry == NULL);
+	printf("Passed remove key test\n");
+	return 0;
+}
+
 int test_pointer_fresh() {
   ht *table = create_table(100);
 
@@ -171,6 +186,7 @@ int test_dll_move_to_front() {
 
 int main() {
   test_get();
+  test_remove_key();
   test_pointer_fresh();
   test_capacity_expansion();
   test_update_entry();
