@@ -52,10 +52,10 @@
 // hash map for what key goes to what node
 
 typedef struct {
-  uint16_t len;
+  uint16_t length;
   uint16_t capacity;
-  dll      dyn_ll;
-  ht       node_map;
+  dll      *dyn_ll;
+  ht       *node_map;
 } lru;
 
 lru *_create_lru(size_t max_len, size_t Arg, ...);

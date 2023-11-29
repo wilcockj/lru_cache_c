@@ -2,6 +2,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int remove_entry(ht *table, unsigned long hash_key) {
+    if(table->entry_count == 0){
+        // nothing in the table
+        // to be able to remove
+        return -1;
+    }
+    size_t index = hash_key % table->capacity;
+    hte *entry = &table->entries[index];
+    if (entry->hash_key == hash_key && entry->data != NULL) {
+        // got in index
+        table->entries[index].data = NULL;
+        table->entries[index].hash_key = 0;
+        table->entry_count--;
+        return 0;
+    }
+    for(int i = index + 1; i < index + table->capacity; i++) {
+        hte *entry = &table->entries[i % table->capacity];
+        if (entry->hash_key == hash_key) {
+          if (entry->data != NULL) {
+            // found via linear probing
+            table->entries[i].data = NULL;
+            table->entries[i].hash_key = 0;
+            table->entry_count--;
+            return 0;
+          } else {
+              return -1;
+          }
+        }
+    }
+    return -1;
+}
+
 hte *get_entry(ht *table, unsigned long hash_key) {
   size_t access_count = 1;
   size_t index = hash_key % table->capacity;

@@ -30,6 +30,26 @@ void * get_data(lru *cache,unsigned long hash){
     // and remove from back if capacity is filled up
 }
 
+
+int add_data(lru *cache, unsigned long hash,void* data_ptr){
+    // check if the cache is full
+    // if it is need to remove the last element
+    if(cache->length == cache->capacity){
+        dll_node *tail = cache->dyn_ll->tail;
+        remove_node(cache->dyn_ll,tail);
+        // remove the tail from dyn_ll
+        ht * table = cache->node_map; 
+        // remove tail from hashmap
+        int err = remove_entry(table, hash);
+        if(err != 0){
+            printf("SOME ERROR IN REMOVE ENTRY\n");
+        }
+
+    }
+    // do i need to put hash in dyn ll? dont think so
+    prepend_data(cache->dyn_ll, data_ptr);
+    return 0;
+}
 /*
 
 lru *_create_lru(size_t max_len, size_t Arg, ...) {

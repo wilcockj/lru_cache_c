@@ -23,6 +23,7 @@ typedef struct {
 // make get function , used to check if in hash map as well
 hte *get_entry(ht *table, unsigned long hash_key);
 int add_entry(ht *table, void *data, unsigned long hash_key);
+int remove_entry(ht *table, unsigned long hash_key);
 ht *create_table(size_t capacity);
 int free_table(ht *table);
 #endif
