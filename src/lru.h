@@ -66,8 +66,8 @@ typedef struct {
 typedef struct {
   uint16_t len;
   uint16_t capacity;
-  dll_node *head;
-  dll_node *tail;
+  dll      dyn_ll;
+  ht       node_map;
 } lru;
 
 lru *_create_lru(size_t max_len, size_t Arg, ...);
