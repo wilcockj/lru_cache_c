@@ -190,8 +190,32 @@ int test_lru_create(){
     lru * cache = create_lru(100);
     ASSERT(cache->capacity == 100);
     ASSERT(cache->node_map->capacity == 100);
-    printf("Passed LRU creation test\n");
     free_lru(cache);
+    printf("Passed LRU creation test\n");
+    return 0;
+}
+
+int test_lru_add(){
+    lru * cache = create_lru(100);
+    ASSERT(cache->capacity == 100);
+    ASSERT(cache->node_map->capacity == 100);
+    int num = 2;
+    int num1 = 4;
+    add_data(cache, 1, (void *)&num);
+    ASSERT(*(int *)get_data(cache, 1) == 2);
+    add_data(cache, 2, (void *)&num1);
+    ASSERT(*(int *)get_data(cache, 2) == 4);
+    ASSERT(cache->node_map->entry_count == 2);
+    ASSERT(*(int *)cache->dyn_ll->head->data == 4);
+    
+    // access data and check that it is moved
+    // to head of dyn_ll
+    ASSERT(*(int *)get_data(cache, 1) == 2);
+    ASSERT(*(int *)cache->dyn_ll->head->data == 2);
+    ASSERT(cache->node_map->entry_count == 2);
+
+    free_lru(cache);
+    printf("Passed LRU add test\n");
     return 0;
 }
 
@@ -210,5 +234,6 @@ int main() {
 
   // lru tests
   test_lru_create();
+  test_lru_add();
   return EXIT_SUCCESS;
 }
