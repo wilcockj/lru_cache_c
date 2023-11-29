@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 // add functionality for lru
 // using the hashmap in hashmap.c/h to
@@ -28,13 +29,21 @@ void * get_data(lru *cache,unsigned long hash){
     // get data from that node if exists and move to front
     // otherwise need to add new node to front
     // and remove from back if capacity is filled up
+    hte *entry = get_entry(cache->node_map,hash);
+    if(entry != NULL){
+        dll_node *node = (dll_node *) entry->data; // pointer to dll
+        move_node_to_front(cache->dyn_ll, (dll_node *)entry->data);
+        return node->data;
+    }
+    return NULL;
 }
 
 
 int add_data(lru *cache, unsigned long hash,void* data_ptr){
     // check if the cache is full
     // if it is need to remove the last element
-    if(cache->length == cache->capacity){
+    hte *entry = get_entry(cache->node_map,hash);
+    if(cache->length == cache->capacity && entry == NULL){
         dll_node *tail = cache->dyn_ll->tail;
         remove_node(cache->dyn_ll,tail);
         // remove the tail from dyn_ll
@@ -46,19 +55,38 @@ int add_data(lru *cache, unsigned long hash,void* data_ptr){
         }
 
     }
-    hte *entry = get_entry(cache->node_map,hash);
     if(entry != NULL){
-	// data is already in linked list and needs
-	// to be moved to the front
-	move_node_to_front(cache->dyn_ll,(dll_node *)entry->data);
+        // data is already in linked list and needs
+        // to be moved to the front
+        move_node_to_front(cache->dyn_ll,(dll_node *)entry->data);
     }
     else{
 	    // do i need to put hash in dyn ll? dont think so
-	    hte *entry = prepend_data(cache->dyn_ll, data_ptr);
+	    dll_node *entry = prepend_data(cache->dyn_ll, data_ptr);
+        // add node to hashtable 
 	    add_entry(cache->node_map, (void *)entry, hash);
     }
     return 0;
 }
+
+lru * create_lru(size_t capacity){
+    if(capacity == 0){
+        // can't have no capacity
+        return NULL;
+    }
+    assert(capacity != 0);
+    lru * cache = malloc(sizeof(lru));
+    cache->node_map = create_table(capacity);
+    dll ll = create_dll();
+    cache->dyn_ll = malloc(sizeof(dll));
+    cache->dyn_ll->head = ll.head;
+    cache->dyn_ll->tail = ll.tail;
+    cache->dyn_ll->length = ll.length;
+    cache->length = 0;
+    cache->capacity = capacity;
+    return cache;
+}
+
 /*
 
 lru *_create_lru(size_t max_len, size_t Arg, ...) {

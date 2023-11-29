@@ -21,7 +21,7 @@ else
         clipped_output=$(echo "$valgrindoutput" | tail -n 8)
         echo "$clipped_output"
     else
-        echo "Memory leaks detected!"
+        echo "------Memory leaks detected!-----"
         echo "$valgrindoutput"
     fi
 

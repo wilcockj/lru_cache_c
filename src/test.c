@@ -1,6 +1,7 @@
 #include "test.h"
 #include "assert.h"
 #include "dll.h"
+#include "lru.h"
 #include "hashmap.h"
 #include <stdio.h>
 
@@ -28,6 +29,7 @@ int test_remove_key() {
 	hte *entry = get_entry(table,2);
 	ASSERT(entry == NULL);
 	printf("Passed remove key test\n");
+    free_table(table);
 	return 0;
 }
 
@@ -184,14 +186,28 @@ int test_dll_move_to_front() {
   return 0;
 }
 
+int test_lru_create(){
+    lru * cache = create_lru(100);
+    ASSERT(cache->capacity == 100);
+    ASSERT(cache->node_map->capacity == 100);
+    printf("Passed LRU creation test\n");
+    return 0;
+}
+
 int main() {
+  // hashmap tests
   test_get();
   test_remove_key();
   test_pointer_fresh();
   test_capacity_expansion();
   test_update_entry();
+
+  // dynamic linked list tests
   test_dll_creation();
   test_dll_prepend();
   test_dll_move_to_front();
+
+  // lru tests
+  test_lru_create();
   return EXIT_SUCCESS;
 }

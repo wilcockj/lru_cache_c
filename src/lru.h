@@ -12,7 +12,7 @@
 // the inputs to a function
 
 #define MAX_ARGS 100
-#define create_lru(max_len,...) _create_lru(max_len, _NARG(__VA_ARGS__), __VA_ARGS__)
+//#define create_lru(max_len,...) _create_lru(max_len, _NARG(__VA_ARGS__), __VA_ARGS__)
 #define _NARG(...)      _NARG_( __VA_ARGS__, _RSEQ() )
 #define _NARG_(...)     _SEQ( __VA_ARGS__ )
 #define _SEQ( \
@@ -59,5 +59,6 @@ typedef struct {
 } lru;
 
 lru *_create_lru(size_t max_len, size_t Arg, ...);
+lru *create_lru(size_t capacity);
 int add_data(lru *cache, unsigned long hash,void* data_ptr);
 void * get_data(lru *my_lru, unsigned long hash);
