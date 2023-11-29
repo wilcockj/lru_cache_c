@@ -87,6 +87,14 @@ lru * create_lru(size_t capacity){
     return cache;
 }
 
+int free_lru(lru * cache){
+    free_dll(cache->dyn_ll);
+    free(cache->dyn_ll);
+    free_table(cache->node_map);
+    free(cache);
+    return 0;
+}
+
 /*
 
 lru *_create_lru(size_t max_len, size_t Arg, ...) {

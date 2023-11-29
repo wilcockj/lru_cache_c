@@ -62,3 +62,4 @@ lru *_create_lru(size_t max_len, size_t Arg, ...);
 lru *create_lru(size_t capacity);
 int add_data(lru *cache, unsigned long hash,void* data_ptr);
 void * get_data(lru *my_lru, unsigned long hash);
+int free_lru(lru * cache);

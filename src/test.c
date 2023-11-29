@@ -191,6 +191,7 @@ int test_lru_create(){
     ASSERT(cache->capacity == 100);
     ASSERT(cache->node_map->capacity == 100);
     printf("Passed LRU creation test\n");
+    free_lru(cache);
     return 0;
 }
 
