@@ -11,6 +11,10 @@
     }                                                                          \
   } while (0)
 
+/* Add some nice logging that can be toggled
+ * Work on the lru part, now that hashmap is functional
+ */
+
 int fib(int n) {
   if (n < 2)
     return n;
@@ -35,14 +39,14 @@ int main() {
   add_entry(table, (void *)&yes3, 50);
   add_entry(table, (void *)&yes4, 60);
 
-  for (int i = 100; i < 200; i++) {
+  for (int i = 110; i < 200; i++) {
     //  printf("putting data in at hash %d\n", i);
     int err = add_entry(table, (void *)&yes3, i);
     if (err != 0) {
       printf("Some error allocating for hash_key %d\n", i);
     }
   }
-  printf("after populating the hash map capacity is %d and entry_count = %d\n",
+  printf("after populating the hash map capacity is %zu and entry_count = %ld\n",
          table->capacity, table->entry_count);
 
   hte *entry = get_entry(table, 100);
@@ -57,7 +61,7 @@ int main() {
   for (int i = 0; i < 12000; i++) {
     hte *entry = get_entry(table, i);
     if (entry != NULL) {
-      printf("entry at hash %d = %d\n", entry->hash_key, *((int *)entry->data));
+      printf("entry at hash %ld = %d\n", entry->hash_key, *((int *)entry->data));
       printf("took %d accesses\n", entry->accesses_to_find);
     }
   }

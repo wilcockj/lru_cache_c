@@ -2,7 +2,39 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-hte *get_entry(ht *table, long unsigned hash_key) {
+int remove_entry(ht *table, unsigned long hash_key) {
+    if(table->entry_count == 0){
+        // nothing in the table
+        // to be able to remove
+        return -1;
+    }
+    size_t index = hash_key % table->capacity;
+    hte *entry = &table->entries[index];
+    if (entry->hash_key == hash_key && entry->data != NULL) {
+        // got in index
+        table->entries[index].data = NULL;
+        table->entries[index].hash_key = 0;
+        table->entry_count--;
+        return 0;
+    }
+    for(int i = index + 1; i < index + table->capacity; i++) {
+        hte *entry = &table->entries[i % table->capacity];
+        if (entry->hash_key == hash_key) {
+          if (entry->data != NULL) {
+            // found via linear probing
+            table->entries[i].data = NULL;
+            table->entries[i].hash_key = 0;
+            table->entry_count--;
+            return 0;
+          } else {
+              return -1;
+          }
+        }
+    }
+    return -1;
+}
+
+hte *get_entry(ht *table, unsigned long hash_key) {
   size_t access_count = 1;
   size_t index = hash_key % table->capacity;
   hte *entry = &table->entries[index];
@@ -36,9 +68,9 @@ static hte *get_entry_index(ht *table, size_t index) {
 }
 
 // TODO make this int return and add some errors
-int add_entry(ht *table, void *data, long unsigned hash_key) {
+int add_entry(ht *table, void *data, unsigned long hash_key) {
   size_t index = hash_key % table->capacity;
-  if (table->entries[index].data == NULL) {
+  if (table->entries[index].data == NULL || table->entries[index].hash_key == hash_key) {
     // printf("inserting data at %d\n", index);
     table->entries[index].data = data;
     table->entries[index].hash_key = hash_key;
@@ -47,17 +79,22 @@ int add_entry(ht *table, void *data, long unsigned hash_key) {
     // linearly look for a free entry after index
     if (table->capacity == table->entry_count) {
       // TODO need to make new hash table double the capacity
+#ifdef LOG
       printf("TABLE WAS FULL ON KEY %lu\n", hash_key);
-      printf("capacity = %d, entry_count = %d\n", table->capacity,
+      printf("capacity = %zu, entry_count = %ld\n", table->capacity,
              table->entry_count);
+#endif
       ht *new_ht = create_table(table->capacity * 2);
       if (new_ht == NULL) {
         // some error allocating
+        free_table(new_ht);
         return -1;
       }
 
+#ifdef LOG
       printf("allocated and populated new hash table, new capacity = %zu\n",
              new_ht->capacity);
+#endif
       // put the old data in the new_ht
       for (int i = 0; i < table->capacity; i++) {
         hte *old_entry = get_entry_index(table, i);
@@ -70,6 +107,9 @@ int add_entry(ht *table, void *data, long unsigned hash_key) {
       table->entries = new_ht->entries;
       table->capacity = new_ht->capacity;
       table->entry_count = new_ht->entry_count;
+      // bad code but free newly generated table
+      free(new_ht);
+
       int err = add_entry(table, data, hash_key);
       if (err != 0) {
         // some error adding
@@ -78,7 +118,7 @@ int add_entry(ht *table, void *data, long unsigned hash_key) {
       return 0;
     }
     for (int i = index + 1; i < index + table->capacity; i++) {
-      if (table->entries[i % table->capacity].data == NULL) {
+      if (table->entries[i % table->capacity].data == NULL || table->entries[i % table->capacity].hash_key == hash_key) {
         // printf("linear probe inserting data at %d, num of entries = %d\n",
         //       i % table->capacity, table->entry_count);
         table->entries[i % table->capacity].data = data;
@@ -107,4 +147,10 @@ ht *create_table(size_t capacity) {
   table->capacity = capacity;
   table->entry_count = 0;
   return table;
+}
+
+int free_table(ht *table){
+   free(table->entries); 
+   free(table);
+   return 0;
 }

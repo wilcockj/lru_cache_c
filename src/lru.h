@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include "dll.h"
+#include "hashmap.h"
 // Generic LRU in C
 // define the size of the lru
 // some sort of hash based on what is in data
@@ -10,7 +12,7 @@
 // the inputs to a function
 
 #define MAX_ARGS 100
-#define create_lru(max_len,...) _create_lru(max_len, _NARG(__VA_ARGS__), __VA_ARGS__)
+//#define create_lru(max_len,...) _create_lru(max_len, _NARG(__VA_ARGS__), __VA_ARGS__)
 #define _NARG(...)      _NARG_( __VA_ARGS__, _RSEQ() )
 #define _NARG_(...)     _SEQ( __VA_ARGS__ )
 #define _SEQ( \
@@ -42,26 +44,22 @@
 19,18,17,16,15,14,13,12,11,10, \
 9,8,7,6,5,4,3,2,1,0
 
-typedef struct lru_dll {
-  void *data;
-  unsigned long hash;
-  struct lru_dll *prev, *next;
-} lru_dll;
-
 // maybe use variadics to macro a function into lru?
 // store a void pointer to data then allow the function
 // to cast to whatever happens to make sense
 // make simple and just traverse the dll to find
+// doubly linked list for actual lru
+// hash map for what key goes to what node
+
 typedef struct {
-  // doubly linked list for actual lru
-  // hash map for what key goes to what node
-  uint16_t len;
-  uint16_t max_len;
-  lru_dll*  head;
-  lru_dll*  tail;
+  uint16_t length;
+  uint16_t capacity;
+  dll      *dyn_ll;
+  ht       *node_map;
 } lru;
 
-
 lru *_create_lru(size_t max_len, size_t Arg, ...);
-lru *add_data(void* data_ptr);
-void * get_data(lru *my_lru);
+lru *create_lru(size_t capacity);
+int add_data(lru *cache, unsigned long hash,void* data_ptr);
+void * get_data(lru *my_lru, unsigned long hash);
+int free_lru(lru * cache);
