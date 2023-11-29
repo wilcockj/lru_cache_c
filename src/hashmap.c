@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-hte *get_entry(ht *table, long unsigned hash_key) {
+hte *get_entry(ht *table, unsigned long hash_key) {
   size_t access_count = 1;
   size_t index = hash_key % table->capacity;
   hte *entry = &table->entries[index];
@@ -36,7 +36,7 @@ static hte *get_entry_index(ht *table, size_t index) {
 }
 
 // TODO make this int return and add some errors
-int add_entry(ht *table, void *data, long unsigned hash_key) {
+int add_entry(ht *table, void *data, unsigned long hash_key) {
   size_t index = hash_key % table->capacity;
   if (table->entries[index].data == NULL || table->entries[index].hash_key == hash_key) {
     // printf("inserting data at %d\n", index);

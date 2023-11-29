@@ -59,5 +59,5 @@ typedef struct {
 } lru;
 
 lru *_create_lru(size_t max_len, size_t Arg, ...);
-lru *add_data(void* data_ptr);
-void * get_data(lru *my_lru);
+int add_data(lru *cache, unsigned long hash,void* data_ptr);
+void * get_data(lru *my_lru, unsigned long hash);

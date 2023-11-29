@@ -10,7 +10,7 @@
 
 typedef struct {
   void *data;
-  long unsigned hash_key;
+  unsigned long hash_key;
   uint16_t accesses_to_find;
 } hte;
 
@@ -21,8 +21,8 @@ typedef struct {
 } ht;
 
 // make get function , used to check if in hash map as well
-hte *get_entry(ht *table, long unsigned hash_key);
-int add_entry(ht *table, void *data, long unsigned hash_key);
+hte *get_entry(ht *table, unsigned long hash_key);
+int add_entry(ht *table, void *data, unsigned long hash_key);
 ht *create_table(size_t capacity);
 int free_table(ht *table);
 #endif

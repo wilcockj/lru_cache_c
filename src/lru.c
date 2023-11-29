@@ -20,6 +20,16 @@ unsigned long hash_args(size_t *list, size_t list_len) {
   }
   return hash;
 }
+
+void * get_data(lru *cache,unsigned long hash){       
+
+    // need to lookup hash in hashmap
+    // that will point to node
+    // get data from that node if exists and move to front
+    // otherwise need to add new node to front
+    // and remove from back if capacity is filled up
+}
+
 /*
 
 lru *_create_lru(size_t max_len, size_t Arg, ...) {
