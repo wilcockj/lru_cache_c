@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include "dll.h"
 // Generic LRU in C
 // define the size of the lru
 // some sort of hash based on what is in data
@@ -59,8 +60,15 @@ typedef struct {
   uint16_t max_len;
   lru_dll*  head;
   lru_dll*  tail;
-} lru;
+} lru_old;
 
+
+typedef struct {
+  uint16_t len;
+  uint16_t capacity;
+  dll_node *head;
+  dll_node *tail;
+} lru;
 
 lru *_create_lru(size_t max_len, size_t Arg, ...);
 lru *add_data(void* data_ptr);
