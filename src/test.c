@@ -235,6 +235,9 @@ int test_lru_fill(){
     }
     ASSERT(cache->capacity == 100);
     ASSERT(cache->node_map->capacity == 100);
+    ASSERT(*(int *)get_data(cache,199) == 199);
+    ASSERT(*(int *)get_data(cache,190) == 190);
+    ASSERT(*(int *)cache->dyn_ll->head->data == 190);
     printf("Passed lru fill test\n");
     free_lru(cache);
     return 0;

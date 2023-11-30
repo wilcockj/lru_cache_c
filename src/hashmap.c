@@ -1,6 +1,7 @@
 #include "hashmap.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 int remove_entry(ht *table, unsigned long hash_key) {
     if(table->entry_count == 0){
@@ -11,10 +12,6 @@ int remove_entry(ht *table, unsigned long hash_key) {
     }
     size_t index = hash_key % table->capacity;
     hte *entry = &table->entries[index];
-    if(entry != NULL){
-        printf("real thing\n");
-        printf("hash %lu vs %lu\n",entry->hash_key, hash_key);
-    }
     if (entry->hash_key == hash_key && entry->data != NULL) {
         // got in index
         table->entries[index].data = NULL;
@@ -37,7 +34,7 @@ int remove_entry(ht *table, unsigned long hash_key) {
           }
         }
     }
-    printf("UHHH\n");
+    assert("bad" "Bad");
     return -1;
 }
 
