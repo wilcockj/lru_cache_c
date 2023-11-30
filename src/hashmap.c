@@ -6,10 +6,15 @@ int remove_entry(ht *table, unsigned long hash_key) {
     if(table->entry_count == 0){
         // nothing in the table
         // to be able to remove
+        printf("NOTHING IN TABLE\n");
         return -1;
     }
     size_t index = hash_key % table->capacity;
     hte *entry = &table->entries[index];
+    if(entry != NULL){
+        printf("real thing\n");
+        printf("hash %lu vs %lu\n",entry->hash_key, hash_key);
+    }
     if (entry->hash_key == hash_key && entry->data != NULL) {
         // got in index
         table->entries[index].data = NULL;
@@ -22,15 +27,17 @@ int remove_entry(ht *table, unsigned long hash_key) {
         if (entry->hash_key == hash_key) {
           if (entry->data != NULL) {
             // found via linear probing
-            table->entries[i].data = NULL;
-            table->entries[i].hash_key = 0;
+            table->entries[i % table->capacity].data = NULL;
+            table->entries[i % table->capacity].hash_key = 0;
             table->entry_count--;
             return 0;
           } else {
+              printf("FOUND HASH TO REMOVE BUT NO DATA");
               return -1;
           }
         }
     }
+    printf("UHHH\n");
     return -1;
 }
 
@@ -147,6 +154,21 @@ ht *create_table(size_t capacity) {
   table->capacity = capacity;
   table->entry_count = 0;
   return table;
+}
+
+int remove_entry_from_ptr(ht *table, void *data){
+    if(data == NULL){
+        printf("bruh you tried to remove null what de hell\n");
+    }
+    for(int i = 0; i < table->capacity; i++){
+        if(table->entries[i].data == data){
+            table->entries[i % table->capacity].data = NULL;
+            table->entries[i % table->capacity].hash_key = 0;
+            table->entry_count--;
+            return 0;
+        }
+    }
+    return -1;
 }
 
 int free_table(ht *table){

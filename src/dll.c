@@ -44,13 +44,19 @@ int remove_node(dll *linked_list, dll_node *node) {
 
   dll_node *old_prev = node->prev;
   dll_node *old_next = node->next;
-  old_prev = old_next;
-  old_next->prev = old_prev;
+  //old_prev = old_next;
+  if(old_next != NULL && old_prev != NULL){
+      old_next->prev = old_prev;
+      old_prev->next = old_next;
+  }
+
   if(is_head){
-     linked_list->head = node->next;
+     old_next->prev = NULL;
+     linked_list->head = old_next;
   }
   else if(is_tail){
-      linked_list->tail = node->prev;
+      old_prev->next = NULL;
+      linked_list->tail = old_prev;
   }
   linked_list->length--;
   free(node);

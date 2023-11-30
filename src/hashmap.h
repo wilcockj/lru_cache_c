@@ -26,4 +26,5 @@ int add_entry(ht *table, void *data, unsigned long hash_key);
 int remove_entry(ht *table, unsigned long hash_key);
 ht *create_table(size_t capacity);
 int free_table(ht *table);
+int remove_entry_from_ptr(ht *table, void *data);
 #endif

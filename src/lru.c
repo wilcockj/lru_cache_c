@@ -43,17 +43,25 @@ int add_data(lru *cache, unsigned long hash,void* data_ptr){
     // check if the cache is full
     // if it is need to remove the last element
     hte *entry = get_entry(cache->node_map,hash);
-    if(cache->length == cache->capacity && entry == NULL){
+    if(cache->node_map->entry_count == cache->capacity && entry == NULL){
+        // EVICTION TIME
         dll_node *tail = cache->dyn_ll->tail;
-        remove_node(cache->dyn_ll,tail);
+
+        assert(tail != NULL);
+
+        int rmv_node_err = remove_node(cache->dyn_ll,tail);
+        if(rmv_node_err != 0){
+            printf("SOME ERROR IN REMOVE NODE\n");
+        }
         // remove the tail from dyn_ll
         ht * table = cache->node_map; 
         // remove tail from hashmap
-        int err = remove_entry(table, hash);
+        // need to remove tail from hashmap
+        int err = remove_entry_from_ptr(table, tail);
         if(err != 0){
             printf("SOME ERROR IN REMOVE ENTRY\n");
         }
-
+        cache->length--;
     }
     if(entry != NULL){
         // data is already in linked list and needs
@@ -65,6 +73,7 @@ int add_data(lru *cache, unsigned long hash,void* data_ptr){
 	    dll_node *entry = prepend_data(cache->dyn_ll, data_ptr);
         // add node to hashtable 
 	    add_entry(cache->node_map, (void *)entry, hash);
+        cache->length++;
     }
     return 0;
 }

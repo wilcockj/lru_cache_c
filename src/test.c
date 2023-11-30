@@ -219,6 +219,27 @@ int test_lru_add(){
     return 0;
 }
 
+int test_lru_fill(){
+    // need to test filling up
+    // the lru and that correct nodes
+    // get removed
+    // and that hashmap does not expand itself
+    
+    lru * cache = create_lru(100);
+    ASSERT(cache->capacity == 100);
+    ASSERT(cache->node_map->capacity == 100);
+    int num[200] = {0};
+    for(int i = 0; i < 200; i++){
+        num[i] = i;
+        add_data(cache,i,(void *)&num[i]);
+    }
+    ASSERT(cache->capacity == 100);
+    ASSERT(cache->node_map->capacity == 100);
+    printf("Passed lru fill test\n");
+    free_lru(cache);
+    return 0;
+}
+
 int main() {
   // hashmap tests
   test_get();
@@ -235,5 +256,6 @@ int main() {
   // lru tests
   test_lru_create();
   test_lru_add();
+  test_lru_fill();
   return EXIT_SUCCESS;
 }
