@@ -1,11 +1,11 @@
 if [ "$1" != "test" ]
 then
     echo "Building cache binary"
-    gcc -Wall -g3 src/dll.c src/hashmap.c src/lru.c src/main.c -DLOG -o cache
+    gcc -O3 -Wall -g3 src/dll.c src/hashmap.c src/lru.c src/main.c -DLOG -o cache
     echo "Finished build cache"
 else
     echo "Building test binary"
-    gcc -Wall -g3 src/dll.c src/hashmap.c src/lru.c src/test.c -DLOG -o lrutest
+    gcc -O3 -Wall -g3 src/dll.c src/hashmap.c src/lru.c src/test.c -DLOG -o lrutest
     echo "Finished build test"
     ./lrutest
     if [ $? == 0 ]

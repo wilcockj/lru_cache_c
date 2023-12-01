@@ -233,9 +233,12 @@ int test_lru_fill(){
         num[i] = i;
         add_data(cache,i,(void *)&num[i]);
     }
+    // make sure capacity was respected
     ASSERT(cache->capacity == 100);
+    // make sure the hashmap did not expand
     ASSERT(cache->node_map->capacity == 100);
     ASSERT(*(int *)get_data(cache,199) == 199);
+    ASSERT(*(int *)cache->dyn_ll->head->data == 199);
     ASSERT(*(int *)get_data(cache,190) == 190);
     ASSERT(*(int *)cache->dyn_ll->head->data == 190);
     printf("Passed lru fill test\n");
