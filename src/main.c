@@ -2,6 +2,7 @@
 #include "lru.h"
 #include <assert.h>
 #include <stdio.h>
+#include <time.h>
 #define ASSERT(condition)                                                      \
   do {                                                                         \
     if (!(condition)) {                                                        \
@@ -21,49 +22,41 @@ int fib(int n) {
   return fib(n - 1) + fib(n - 2);
 }
 
+int lru_fib(lru * cache, int n){
+      
+    // check cache 
+    void * cached_val = get_data(cache,n);
+    if(cached_val != NULL){
+        return *(int *)cached_val;
+    }
+    if(n < 2)
+      return n;
+    int *fib_res = malloc(sizeof(int));
+    *fib_res = lru_fib(cache,n-1) + lru_fib(cache,n-2); 
+    add_data(cache,n,(void *)fib_res);
+    return *fib_res;
+}
+
 int main() {
 
+  lru *cache = create_lru(100);
+  clock_t begin = clock();
+  int result = lru_fib(cache,60);
+  clock_t end = clock();
+  double time_spent = (double)(end-begin);
+  printf("lruified took %f\n",time_spent);
+  
+  begin = clock();
+  int reg_result = fib(60);
+  end = clock();
+  time_spent = (double)(end-begin);
+  printf("non cached took %f\n",time_spent);
+
+  printf("entries in cache is %d\n",cache->node_map->entry_count);
+  printf("%d %d\n", result,reg_result);
   char *test = "asdasdasdasdasdas";
   //  create_lru(128, 2, 3, 34123123, 123, 123, 123, 12, 312, 312, 312, 3, 13,
   //  1, 2,
   //            3, 4, 5);
-  ht *table = create_table(100);
-  int yes = 1000;
-  int yes1 = 132;
-  int yes2 = 1000;
-  int yes3 = 1000;
-  int yes4 = 1002;
-  add_entry(table, (void *)&yes, 1);
-  add_entry(table, (void *)&yes1, 100);
-  add_entry(table, (void *)&yes2, 20);
-  add_entry(table, (void *)&yes3, 50);
-  add_entry(table, (void *)&yes4, 60);
-
-  for (int i = 110; i < 200; i++) {
-    //  printf("putting data in at hash %d\n", i);
-    int err = add_entry(table, (void *)&yes3, i);
-    if (err != 0) {
-      printf("Some error allocating for hash_key %d\n", i);
-    }
-  }
-  printf("after populating the hash map capacity is %zu and entry_count = %ld\n",
-         table->capacity, table->entry_count);
-
-  hte *entry = get_entry(table, 100);
-  assert(*((int *)entry->data) == 132);
-
-  yes4 += 1;
-  entry = get_entry(table, 60);
-  ASSERT(*((int *)entry->data) == 1003);
-
-  printf("got corrrect entry key = %lu, data = %d\n", entry->hash_key,
-         *((int *)entry->data));
-  for (int i = 0; i < 12000; i++) {
-    hte *entry = get_entry(table, i);
-    if (entry != NULL) {
-      printf("entry at hash %ld = %d\n", entry->hash_key, *((int *)entry->data));
-      printf("took %d accesses\n", entry->accesses_to_find);
-    }
-  }
   return 0;
 }
