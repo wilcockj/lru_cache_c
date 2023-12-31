@@ -60,7 +60,7 @@ int main() {
   unsigned long long lru_result = 0;
   for (int i = 0; i < fib_num; i++) {
     lru_result = lru_fib(cache, i);
-    printf("%llu", lru_result);
+    //printf("%llu", lru_result);
   }
   clock_t end = clock();
   double lru_time_spent = (double)(end - begin);
